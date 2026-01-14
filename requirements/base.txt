@@ -1,0 +1,12 @@
+
+django
+pillow
+django-bootstrap4
+django-tinymce
+django-crispy-forms
+crispy-bootstrap5
+django-ckeditor
+django-elasticsearch-dsl
+elasticsearch
+python-dotenv
+django-widget-tweaks

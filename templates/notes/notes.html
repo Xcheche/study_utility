@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container py-4">
+
+  <!-- ================== Header ================== -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0">My Notes</h3>
+
+    <form method="get" action="{% url 'search' %}" class="d-flex">
+      <input type="text" name="q" class="form-control me-2" placeholder="Search notes" value="{{ search_query }}">
+      <button class="btn btn-outline-secondary" type="submit">
+        Search
+      </button>
+    </form>
+  </div>
+
+  <!-- ================== Notes Grid ================== -->
+  <div class="row g-3">
+
+    {% for note in notes %}
+    <div class="col-sm-6 col-md-4 col-lg-3">
+      <div class="card h-100">
+
+        <div class="card-body">
+          <h6 class="card-title">
+            {{ note.title|safe }}
+          </h6>
+          <div class="card-text small text-muted">
+            {{ note.content|safe|truncatewords:20 }}
+          </div>
+        </div>
+
+        <div class="card-footer bg-white d-flex justify-content-between">
+          <a href="{% url 'note_detail' note.id %}" class="btn btn-sm btn-outline-primary">
+            View
+          </a>
+
+          <div>
+            <a href="{% url 'update' note.id %}" class="btn btn-sm btn-outline-secondary">
+              Edit
+            </a>
+            <a href="{% url 'delete' note.id %}" class="btn btn-sm btn-outline-danger">
+              Delete
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center text-muted">
+      No notes available
+    </div>
+    {% endfor %}
+
+  </div>
+
+  <!-- Pagination -->
+  <div class="mt-4">
+    {% include 'notes/paginate.html' %}
+  </div>
+
+  <!-- ================== Create Note ================== -->
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-8 col-lg-6">
+
+      <div class="card">
+        <div class="card-body">
+
+          <h5 class="card-title mb-3">
+            Create Note
+          </h5>
+
+          <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <div class="d-grid mt-3">
+              <button type="submit" class="btn btn-primary">
+                Create Note
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}

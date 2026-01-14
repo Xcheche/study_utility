@@ -1,0 +1,52 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="container mt-5">
+  <header class="mb-4">
+    <h1 class="text-center">Search Results</h1>
+    <form
+      method="get"
+      action="{% url 'search' %}"
+      class="d-flex justify-content-center"
+    >
+      <input
+        type="text"
+        name="q"
+        class="form-control w-50"
+        placeholder="Search notes..."
+        value="{{ query }}"
+        required
+      />
+      <button type="submit" class="btn btn-primary ml-2">Search</button>
+    </form>
+  </header>
+
+  <main>
+    {% if query %}
+    <h2 class="text-center">Results for "{{ query }}"</h2>
+    {% if results %}
+    <div class="row">
+      {% for note in results %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <a href="{% url 'note_detail' note.id %}">
+              <h3 class="card-title">{{ note.title }}</h3>
+            </a>
+            <p class="card-text">{{ note.content|truncatewords:20 }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center">No results found for "{{ query }}".</p>
+    {% endif %} {% else %}
+    <p class="text-center">Enter a keyword to search your notes.</p>
+    {% endif %}
+  </main>
+
+  <footer class="text-center mt-4">
+    <p>&copy; {{ year|default:2025 }} Notes App</p>
+  </footer>
+</div>
+
+{% endblock %}
